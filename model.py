@@ -1,5 +1,4 @@
 import torch
-import torch.nn
 import math
 
 class InputEmbeddings(nn.Module):
@@ -8,11 +7,12 @@ class InputEmbeddings(nn.Module):
         super().__init__()
         self.d_model = d_model
         self.vocab_size = vocab_size
-        self.embedding = nn.Embedding(d_model, vocab_size)
-
+        self.embedding = nn.Embedding(vocab_size, d_model)
 
     def forward(self, x):
-        return self.embedding * math.sqrt(self.d_model)
+        # (batch, seq_len) --> (batch, seq_len, d_model)
+        # Multiply by sqrt(d_model) to scale the embeddings according to the paper
+        return self.embedding(x) * math.sqrt(self.d_model)
 
 class PositionalEncoding(nn.Module):
 
@@ -38,7 +38,6 @@ class PositionalEncoding(nn.Module):
         x = x + (self.pe[:, :x.shape[1], :]).requires_grad(False)
         return self.dropout(x)
 
-
 class LayerNormalization(nn.Module):
     def __init__(self, eps:float = 10**-6) -> None:
         super().__init__()
@@ -50,7 +49,6 @@ class LayerNormalization(nn.Module):
         mean = x.mean(dim = -1, keepdim = True)
         std = x.std(dim = -1, keepdim = True)
         return self.alpha * (x-mean) / (std + self.eps) + self.bias
-
 
 class FeedForwardBlock(nn.Module):
 
@@ -145,3 +143,19 @@ class Encoder:
         for layer in self.layers:
             x = layer(x, mask)
         return self.norm(x)
+
+class DecoderBlock(nn.Module):
+
+    def __init__(self, features: int, self_attention_block: MultiHeadAttentionBlock, cross_attention_block: MultiHeadAttentionBlock, feed_forward_block: FeedForwardBlock, dropout: float) -> None:
+        super().__init__()
+        self.self_attention_block = self_attention_block
+        self.cross_attention_block = cross_attention_block
+        self.feed_forward_block = feed_forward_block
+        self.residual_connections = nn.ModuleList([ResidualConnection(features, dropout) for _ in range(3)])
+
+    def forward(self, x, encoder_output, src_mask, tgt_mask):
+        x = self.residual_connections[0](x, lambda x: self.self_attention_block(x, x, x, tgt_mask))
+        x = self.residual_connections[1](x, lambda x: self.cross_attention_block(x, encoder_output, encoder_output, src_mask))
+        x = self.residual_connections[2](x, self.feed_forward_block)
+        return x
+
