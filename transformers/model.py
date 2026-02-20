@@ -1,5 +1,6 @@
 import torch
 import math
+import torch.nn as nn
 
 class InputEmbeddings(nn.Module):
 
@@ -208,7 +209,7 @@ class Transformer(nn.Module):
     def project(self, x):
         # (batch, seq_len, vocab_size)
         return self.projection_layer(x)
-    
+
 
 def build_transformer(src_vocab_size: int, tgt_vocab_size: int, src_seq_len: int, tgt_seq_len: int, d_model: int=512, N: int=6, h: int=8, dropout: float=0.1, d_ff: int=2048) -> Transformer:
     # Create the embedding layers
