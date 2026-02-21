@@ -10,7 +10,7 @@ from tokenizers.pre_tokenizers import Whitespace
 
 from pathlib import Path
 
-def get_all_sentence(ds, lang):
+def get_all_sentences(ds, lang):
     for item in ds:
         yield item['translation'][lang]
 
