@@ -12,10 +12,11 @@ class BilingualDataset():
         self.tokenizer_tgt = tokenizer_tgt
         self.src_lang = src_lang
         self.tgt_lang = tgt_lang
+        self.seq_len = seq_len
 
-        self.sos_token = torch.tensor([tokenizer_src.token_to_id(['SOS'])], dtype=torch.int64)
-        self.eos_token = torch.tensor([tokenizer_src.token_to_id(['EOS'])], dtype=torch.int64)
-        self.pad_token = torch.tensor([tokenizer_src.token_to_id(['PAD'])], dtype=torch.int64)
+        self.sos_token = torch.tensor([tokenizer_src.token_to_id("[SOS]")], dtype=torch.int64)
+        self.eos_token = torch.tensor([tokenizer_src.token_to_id("[EOS]")], dtype=torch.int64)
+        self.pad_token = torch.tensor([tokenizer_src.token_to_id("[PAD]")], dtype=torch.int64)
 
     def __len__(self):
         return len(self.ds)
@@ -29,7 +30,7 @@ class BilingualDataset():
         enc_input_tokens = self.tokenizer_src.encode(src_text).ids
         dec_input_tokens = self.tokenizer_tgt.encode(tgt_text).ids
 
-       
+
         enc_num_padding_tokens = self.seq_len - len(enc_input_tokens) - 2
         dec_num_padding_tokens = self.seq_len - len(dec_input_tokens) - 1
 
@@ -43,7 +44,7 @@ class BilingualDataset():
                 self.sos_token,
                 torch.tensor(enc_input_tokens, dtype=torch.int64),
                 self.eos_token,
-                torch.tensor([self.pad_token] * enc_num_padding_tokens, dtype=torch.int64),
+                torch.tensor([self.pad_token.item()] * enc_num_padding_tokens, dtype=torch.int64),
             ],
             dim=0,
         )

@@ -36,7 +36,7 @@ class PositionalEncoding(nn.Module):
         self.register_buffer('pe', pe)
 
     def forward(self, x):
-        x = x + (self.pe[:, :x.shape[1], :]).requires_grad(False)
+        x = x + self.pe[:, :x.shape[1], :].detach()
         return self.dropout(x)
 
 class LayerNormalization(nn.Module):
@@ -49,7 +49,7 @@ class LayerNormalization(nn.Module):
     def forward(self, x):
         mean = x.mean(dim = -1, keepdim = True)
         std = x.std(dim = -1, keepdim = True)
-        return self.alpha * (x-mean) / (std + self.eps) + self.bias
+        return self.alphas * (x-mean) / (std + self.eps) + self.bias
 
 class FeedForwardBlock(nn.Module):
 
@@ -122,7 +122,7 @@ class ResidualConnection(nn.Module):
 
 class EncoderBlock(nn.Module):
 
-    def __init__(self, self_attention_block:MultiHeadAttentionBlock, feed_forward_block: FeedForwardBlock, dropout:float) -> None:
+    def __init__(self,d_model, self_attention_block:MultiHeadAttentionBlock, feed_forward_block: FeedForwardBlock, dropout:float) -> None:
         super().__init__()
         self.self_attention_block = self_attention_block
         self.feed_forward_block = feed_forward_block
@@ -133,7 +133,7 @@ class EncoderBlock(nn.Module):
         x = self.residual_connections[1](x, self.feed_forward_block)
         return x
 
-class Encoder:
+class Encoder(nn.Module):
 
     def __init__(self, layers:nn.ModuleList) -> None:
         super().__init__()
@@ -152,7 +152,7 @@ class DecoderBlock(nn.Module):
         self.self_attention_block = self_attention_block
         self.cross_attention_block = cross_attention_block
         self.feed_forward_block = feed_forward_block
-        self.residual_connections = nn.ModuleList([ResidualConnection(features, dropout) for _ in range(3)])
+        self.residual_connections = nn.ModuleList([ResidualConnection(dropout) for _ in range(3)])
 
     def forward(self, x, encoder_output, src_mask, tgt_mask):
         x = self.residual_connections[0](x, lambda x: self.self_attention_block(x, x, x, tgt_mask))
@@ -238,7 +238,7 @@ def build_transformer(src_vocab_size: int, tgt_vocab_size: int, src_seq_len: int
         decoder_blocks.append(decoder_block)
 
     # Create the encoder and decoder
-    encoder = Encoder(d_model, nn.ModuleList(encoder_blocks))
+    encoder = Encoder(nn.ModuleList(encoder_blocks))
     decoder = Decoder(d_model, nn.ModuleList(decoder_blocks))
 
     # Create the projection layer
