@@ -1,0 +1,100 @@
+{
+  "version": "1.0",
+  "truncation": null,
+  "padding": null,
+  "added_tokens": [
+    {
+      "id": 0,
+      "content": "[UNK]",
+      "single_word": false,
+      "lstrip": false,
+      "rstrip": false,
+      "normalized": false,
+      "special": true
+    },
+    {
+      "id": 1,
+      "content": "[PAD]",
+      "single_word": false,
+      "lstrip": false,
+      "rstrip": false,
+      "normalized": false,
+      "special": true
+    },
+    {
+      "id": 2,
+      "content": "[SOS]",
+      "single_word": false,
+      "lstrip": false,
+      "rstrip": false,
+      "normalized": false,
+      "special": true
+    },
+    {
+      "id": 3,
+      "content": "[EOS]",
+      "single_word": false,
+      "lstrip": false,
+      "rstrip": false,
+      "normalized": false,
+      "special": true
+    }
+  ],
+  "normalizer": null,
+  "pre_tokenizer": {
+    "type": "Whitespace"
+  },
+  "post_processor": null,
+  "decoder": null,
+  "model": {
+    "type": "WordLevel",
+    "vocab": {
+      "[UNK]": 0,
+      "[PAD]": 1,
+      "[SOS]": 2,
+      "[EOS]": 3,
+      ",": 4,
+      "the": 5,
+      "and": 6,
+      "a": 7,
+      ".": 8,
+      "I": 9,
+      "of": 10,
+      "was": 11,
+      "in": 12,
+      ":": 13,
+      "by": 14,
+      "she": 15,
+      "that": 16,
+      "to": 17,
+      ";": 18,
+      "Bessie": 19,
+      "from": 20,
+      "had": 21,
+      "her": 22,
+      "it": 23,
+      "me": 24,
+      "more": 25,
+      "with": 26,
+      "\"": 27,
+      "(": 28,
+      ")": 29,
+      "-": 30,
+      "--": 31,
+      "Eliza": 32,
+      "Georgiana": 33,
+      "John": 34,
+      "Reed": 35,
+      "but": 36,
+      "for": 37,
+      "happy": 38,
+      "no": 39,
+      "now": 40,
+      "on": 41,
+      "out": 42,
+      "so": 43,
+      "were": 44
+    },
+    "unk_token": "[UNK]"
+  }
+}

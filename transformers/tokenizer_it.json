@@ -1,0 +1,97 @@
+{
+  "version": "1.0",
+  "truncation": null,
+  "padding": null,
+  "added_tokens": [
+    {
+      "id": 0,
+      "content": "[UNK]",
+      "single_word": false,
+      "lstrip": false,
+      "rstrip": false,
+      "normalized": false,
+      "special": true
+    },
+    {
+      "id": 1,
+      "content": "[PAD]",
+      "single_word": false,
+      "lstrip": false,
+      "rstrip": false,
+      "normalized": false,
+      "special": true
+    },
+    {
+      "id": 2,
+      "content": "[SOS]",
+      "single_word": false,
+      "lstrip": false,
+      "rstrip": false,
+      "normalized": false,
+      "special": true
+    },
+    {
+      "id": 3,
+      "content": "[EOS]",
+      "single_word": false,
+      "lstrip": false,
+      "rstrip": false,
+      "normalized": false,
+      "special": true
+    }
+  ],
+  "normalizer": null,
+  "pre_tokenizer": {
+    "type": "Whitespace"
+  },
+  "post_processor": null,
+  "decoder": null,
+  "model": {
+    "type": "WordLevel",
+    "vocab": {
+      "[UNK]": 0,
+      "[PAD]": 1,
+      "[SOS]": 2,
+      "[EOS]": 3,
+      ",": 4,
+      "di": 5,
+      ".": 6,
+      "e": 7,
+      "che": 8,
+      "più": 9,
+      "non": 10,
+      "a": 11,
+      "in": 12,
+      "Bessie": 13,
+      "al": 14,
+      "così": 15,
+      "la": 16,
+      "loro": 17,
+      "mi": 18,
+      "'": 19,
+      "Eliza": 20,
+      "Georgiana": 21,
+      "John": 22,
+      "Reed": 23,
+      "aveva": 24,
+      "bambini": 25,
+      "col": 26,
+      "con": 27,
+      "cosa": 28,
+      "cui": 29,
+      "era": 30,
+      "erano": 31,
+      "le": 32,
+      "ma": 33,
+      "momento": 34,
+      "per": 35,
+      "poteva": 36,
+      "quel": 37,
+      "sul": 38,
+      "un": 39,
+      "vi": 40,
+      "—": 41
+    },
+    "unk_token": "[UNK]"
+  }
+}
